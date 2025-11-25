@@ -1,0 +1,218 @@
+openapi: 3.0.4
+info:
+  title: NoyStack API
+  version: 0.0.1
+
+servers:
+  - url: localhost:8080
+
+paths:
+  /api/v1/car:
+    get:
+      summary: Returns a list of cars.
+      operationId: getCars
+      tags:
+        - Car
+      responses:
+        "200": # status code
+          description: A list of cars.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CarResponseDto'
+    post:
+      summary: Create a new car.
+      operationId: postCar
+      tags:
+        - Car
+      requestBody:
+        description: car object to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarDto'
+        required: true
+      responses:
+        "201":
+          description: Car created successfully
+        "400":
+          description: Invalid input
+
+  /api/v1/car/{carId}:
+    get:
+      summary: Get a car by ID.
+      operationId: getCarById
+      tags:
+        - Car
+      parameters:
+        - in: path
+          name: carId
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Car details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CarResponseDto'
+        "404":
+          description: Car not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+    put:
+      summary: Update a car by ID.
+      operationId: putCar
+      tags:
+        - Car
+      parameters:
+        - in: path
+          name: carId
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: car object to update
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarDto'
+        required: true
+      responses:
+        "200":
+          description: Car updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CarResponseDto'
+        "400":
+          description: Invalid input
+        "404":
+          description: Car not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+    delete:
+        summary: Delete a car by ID.
+        operationId: deleteCar
+        tags:
+            - Car
+        parameters:
+            - in: path
+              name: carId
+              required: true
+              schema:
+                  type: string
+                  format: uuid
+        responses:
+            "204":
+              description: Car deleted successfully
+            "404":
+              description: Car not found
+
+  /api/v1/reservation:
+    get:
+      summary: Returns a list of reservations.
+      operationId: getReservations
+      tags:
+        - Reservation
+      parameters:
+        - in: query
+          name: userId
+          schema:
+            type: string
+            format: uuid
+          required: false
+          description: Filter reservations by user ID
+        - in: query
+          name: carId
+          schema:
+            type: string
+            format: uuid
+          required: false
+          description: Filter reservations by car ID
+        - in: query
+          name: startDate
+          schema:
+            type: string
+            format: date-time
+          required: false
+          description: Filter reservations starting from this date
+        - in: query
+          name: endDate
+          schema:
+            type: string
+            format: date-time
+          required: false
+          description: Filter reservations ending by this date
+      responses:
+        "200": # status code
+          description: A list of reservations.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReservationDto'
+
+components:
+  schemas:
+    CarDto:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 64
+
+    CarResponseDto:
+      allOf:
+        - $ref: '#/components/schemas/CarDto'
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+
+    ReservationDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        carId:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+
+    ProblemDetail:
+      type: object
+      description: RFC 7807 Problem Details
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+      required:
+        - title
+        - status

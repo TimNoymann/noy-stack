@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: noy-stack
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/noystackdb
+    username: example
+    password: examplepassword
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health

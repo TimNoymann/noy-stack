@@ -1,0 +1,11 @@
+### Send GET request
+GET http://localhost:8080/api/v1/car
+Accept: application/json
+
+### Send POST request with json body
+POST http://localhost:8080/api/v1/car
+Content-Type: application/json
+
+{
+  "name": "someName"
+}
