@@ -5,6 +5,7 @@
     import de.timnoy.noystack.service.CarService;
     import lombok.RequiredArgsConstructor;
     import org.springframework.http.ResponseEntity;
+    import org.springframework.web.bind.annotation.CrossOrigin;
     import org.springframework.web.bind.annotation.RestController;
 
     import java.net.URI;
@@ -12,6 +13,7 @@
     import java.util.UUID;
 
     @RequiredArgsConstructor
+    @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
     @RestController
     public class CarController implements CarApi {
 
