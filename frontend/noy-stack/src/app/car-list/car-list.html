@@ -1,0 +1,8 @@
+<p>car-list works!</p>
+
+<ul>
+  <li>test</li>
+  @for (car of cars(); track car.id; let i = $index) {
+    <li>{{ i + 1 }}. {{ car.name }}</li>
+  }
+</ul>
