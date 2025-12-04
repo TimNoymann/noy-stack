@@ -3,11 +3,12 @@ spring:
     name: noy-stack
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.xml
-
   datasource:
     url: jdbc:postgresql://localhost:5432/noystackdb
     username: example
     password: examplepassword
+  jpa:
+    open-in-view: false
 
 management:
   endpoints:
