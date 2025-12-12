@@ -13,10 +13,10 @@ import java.util.UUID;
 
 public interface ReservationRepository extends JpaRepository<ReservationEntity, UUID> {
 
-    @Query("SELECT r.id, r.startTime, r.endTime, c.id FROM ReservationEntity r JOIN r.car c")
+    @Query("SELECT r.id as id, r.startTime as start_time, r.endTime as end_time, c.id as car_id FROM ReservationEntity r JOIN r.car c")
     List<ReservationProjection> findAllAsProjection();
 
-    @Query("SELECT r.id, r.startTime, r.endTime, c.id FROM ReservationEntity r JOIN r.car c WHERE r.id = :reservationId")
+    @Query("SELECT r.id as id, r.startTime as start_time, r.endTime as end_time, c.id as car_id FROM ReservationEntity r JOIN r.car c WHERE r.id = :reservationId")
     Optional<ReservationProjection> findAsProjection(@Param("reservationId") UUID reservationId);
 
     boolean existsByCarIdEqualsAndEndTimeBeforeAndStartTimeAfter(UUID carId, LocalDateTime startTime, LocalDateTime endTime);

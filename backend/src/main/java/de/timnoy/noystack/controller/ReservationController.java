@@ -16,7 +16,6 @@ import java.util.UUID;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
-@RequestMapping("/api/v1/reservation")
 @RequiredArgsConstructor
 public class ReservationController implements ReservationApi {
 

@@ -304,14 +304,10 @@ components:
       type: object
       required:
         - carId
-        - userId
         - startTime
         - endTime
       properties:
         carId:
-          type: string
-          format: uuid
-        userId:
           type: string
           format: uuid
         startTime:
@@ -327,6 +323,9 @@ components:
         - type: object
           properties:
             id:
+              type: string
+              format: uuid
+            userId:
               type: string
               format: uuid
 
