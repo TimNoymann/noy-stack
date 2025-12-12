@@ -13,5 +13,34 @@
                 <constraints nullable="false" />
             </column>
         </createTable>
+
+        <createIndex indexName="idx_cars_name" tableName="cars">
+            <column name="name"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="3-createReservations" author="timnoy">
+        <createTable tableName="reservations">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="fk_car_id" type="UUID">
+                <constraints nullable="false" />
+            </column>
+            <column name="start_time" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="end_time" type="datetime">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                constraintName="fk_reservations_car"
+                baseTableName="reservations"
+                baseColumnNames="fk_car_id"
+                referencedTableName="cars"
+                referencedColumnNames="id"
+                onDelete="CASCADE"/>
     </changeSet>
 </databaseChangeLog>

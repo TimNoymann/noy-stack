@@ -37,6 +37,12 @@ paths:
       responses:
         "201":
           description: Car created successfully
+          headers:
+            Location:
+              description: URL of the newly created car
+              schema:
+                type: string
+                format: uri
         "400":
           description: Invalid input
 
@@ -101,22 +107,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProblemDetail'
     delete:
-        summary: Delete a car by ID.
-        operationId: deleteCar
-        tags:
-            - Car
-        parameters:
-            - in: path
-              name: carId
-              required: true
-              schema:
-                  type: string
-                  format: uuid
-        responses:
-            "204":
-              description: Car deleted successfully
-            "404":
-              description: Car not found
+      summary: Delete a car by ID.
+      operationId: deleteCar
+      tags:
+        - Car
+      parameters:
+        - in: path
+          name: carId
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "204":
+          description: Car deleted successfully
+        "404":
+          description: Car not found
 
   /api/v1/reservation:
     get:
@@ -161,7 +167,117 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ReservationDto'
+                  $ref: '#/components/schemas/ReservationResponseDto'
+
+    post:
+      summary: Create a new reservation.
+      operationId: postReservation
+      tags:
+        - Reservation
+      requestBody:
+        description: reservation object to create
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReservationDto'
+      responses:
+        "201":
+          description: Reservation created successfully
+          headers:
+            Location:
+              description: URL of the newly created reservation
+              schema:
+                type: string
+                format: uri
+        "400":
+          description: Invalid input
+
+  /api/v1/reservation/{reservationId}:
+    get:
+      summary: Get a reservation by ID.
+      operationId: getReservationById
+      tags:
+          - Reservation
+      parameters:
+        - in: path
+          name: reservationId
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Reservation details
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/ReservationResponseDto'
+        "404":
+          description: Reservation not found
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/ProblemDetail'
+    put:
+      summary: Update a reservation by ID.
+      operationId: putReservation
+      tags:
+          - Reservation
+      parameters:
+        - in: path
+          name: reservationId
+          required: true
+          schema:
+              type: string
+              format: uuid
+      requestBody:
+          description: reservation object to update
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReservationDto'
+      responses:
+        "200":
+          description: Reservation updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReservationResponseDto'
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
+        "404":
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/ProblemDetail'
+
+    delete:
+      summary: Delete a reservation by ID.
+      operationId: deleteReservation
+      tags:
+          - Reservation
+      parameters:
+        - in: path
+          name: reservationId
+          required: true
+          schema:
+              type: string
+              format: uuid
+      responses:
+        "204":
+          description: Reservation deleted successfully
+        "404":
+          description: Reservation not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetail'
 
 components:
   schemas:
@@ -186,22 +302,33 @@ components:
 
     ReservationDto:
       type: object
+      required:
+        - carId
+        - userId
+        - startTime
+        - endTime
       properties:
-        id:
-          type: string
-          format: uuid
         carId:
           type: string
           format: uuid
         userId:
           type: string
           format: uuid
-        startDate:
+        startTime:
           type: string
           format: date-time
-        endDate:
+        endTime:
           type: string
           format: date-time
+
+    ReservationResponseDto:
+      allOf:
+        - $ref: '#/components/schemas/ReservationDto'
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
 
     ProblemDetail:
       type: object

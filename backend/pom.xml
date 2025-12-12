@@ -167,6 +167,7 @@
 								<useTags>true</useTags>
 								<modelNameSuffix>Dto</modelNameSuffix>
 								<generateBuilders>true</generateBuilders>
+								<dateLibrary>java8-localdatetime</dateLibrary>
 							</configOptions>
 						</configuration>
 					</execution>
