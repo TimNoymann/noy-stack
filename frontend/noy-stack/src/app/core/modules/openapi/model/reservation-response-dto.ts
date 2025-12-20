@@ -9,9 +9,11 @@
  */
 
 
-export interface ReservationDto { 
+export interface ReservationResponseDto { 
     carId: string;
     startTime: string;
     endTime: string;
+    id?: string;
+    userId?: string;
 }
 

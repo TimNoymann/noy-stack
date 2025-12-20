@@ -1,33 +1,60 @@
-import {Component, OnInit, signal, WritableSignal} from '@angular/core';
-import {CarResponseDto, CarService} from '../core/modules/openapi';
-import {NgForOf} from '@angular/common';
+import {Component, inject, OnInit, Signal} from '@angular/core';
+import {CarDto, CarResponseDto} from '../core/modules/openapi';
 import {of} from 'rxjs';
+import {Store} from '@ngrx/store';
+import {selectCars, selectError, selectLoading} from '../core/car/car.feature';
+import {CarActions} from '../core/car/car.actions';
+import {MatTableModule} from '@angular/material/table';
+import {MatButton, MatIconButton} from '@angular/material/button';
+import {FormsModule} from '@angular/forms';
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import {MatProgressSpinner} from '@angular/material/progress-spinner';
+import {MatIcon} from '@angular/material/icon';
+import {MatTooltip} from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-car-list',
   imports: [
-    NgForOf
+    MatTableModule,
+    MatButton,
+    FormsModule,
+    MatDialogModule,
+    MatProgressSpinner,
+    MatIcon,
+    MatIconButton,
+    MatTooltip
   ],
   templateUrl: './car-list.html',
   styleUrl: './car-list.scss',
 })
 export class CarList implements OnInit {
 
-  cars: WritableSignal<CarResponseDto[]> = signal([]);
+  private store = inject(Store);
+  readonly dialog: MatDialog = inject(MatDialog);
 
-  constructor(private carService: CarService) {}
+  cars: Signal<CarResponseDto[]> = this.store.selectSignal(selectCars);
+  loading = this.store.selectSignal(selectLoading);
+  error = this.store.selectSignal(selectError);
+
+  displayedColumns: string[] = ['id', 'name', 'actions'];
 
   ngOnInit(): void {
-    this.carService.getCars().subscribe({
-      next: (cars) => {
-        console.log(cars);
-        this.cars.set(cars);
-      },
-      error: (err) => {
-        console.error('Failed to load cars', err);
-      },
-    });
+    this.store.dispatch(CarActions.enter());
   }
 
   protected readonly of = of;
+
+  deleteCar(id: string, car: CarDto) {
+    this.store.dispatch(CarActions.deleteClicked({id: id, car: car}));
+  }
+
+  addCar() {
+    this.store.dispatch(CarActions.addClicked());
+  }
+
+  editCar(id: string, car: CarDto) {
+    this.store.dispatch(CarActions.editClicked(
+      {id: id, car: car}
+    ))
+  }
 }

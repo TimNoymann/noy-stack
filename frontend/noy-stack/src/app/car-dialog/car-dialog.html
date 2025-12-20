@@ -1,0 +1,45 @@
+<h2 mat-dialog-title>
+  {{ data ? 'Edit Car' : 'Add Car' }}
+</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form" mat-dialog-content>
+    <mat-form-field appearance="fill">
+      Name
+      <input matInput formControlName="name" />
+
+      @if (form.controls.name.invalid && form.controls.name.touched) {
+        @if (form.controls.name.hasError('required')) {
+          <mat-error>Name is required</mat-error>
+        }
+        @if (form.controls.name.hasError('minlength')) {
+          <mat-error>
+            Name must be at least {{
+              form.controls.name.getError('minlength').requiredLength
+            }} characters long
+          </mat-error>
+        }
+      }
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button cdkFocusInitial="form.invalid" (click)="save()">
+    @if (saving()) {
+      <mat-progress-spinner
+        diameter="18"
+        mode="indeterminate"
+      ></mat-progress-spinner>
+      <span class="ml-2">Saving...</span>
+    } @else {
+      {{ isEdit ? 'Save changes' : 'Create car' }}
+    }
+  </button>
+</mat-dialog-actions>
+
+@if (error()) {
+  <mat-error>{{ error() }}</mat-error>
+}
+

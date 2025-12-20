@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 README.md
 api.base.service.ts
 api.module.ts
@@ -17,6 +16,7 @@ model/car-response-dto.ts
 model/models.ts
 model/problem-detail.ts
 model/reservation-dto.ts
+model/reservation-response-dto.ts
 param.ts
 provide-api.ts
 variables.ts

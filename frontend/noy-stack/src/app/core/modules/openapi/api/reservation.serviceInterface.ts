@@ -11,7 +11,9 @@ import { HttpHeaders }                                       from '@angular/comm
 
 import { Observable }                                        from 'rxjs';
 
+import { ProblemDetail } from '../model/models';
 import { ReservationDto } from '../model/models';
+import { ReservationResponseDto } from '../model/models';
 
 
 import { Configuration }                                     from '../configuration';
@@ -23,6 +25,22 @@ export interface ReservationServiceInterface {
     configuration: Configuration;
 
     /**
+     * Delete a reservation by ID.
+     * 
+     * @endpoint delete /api/v1/reservation/{reservationId}
+     * @param reservationId 
+     */
+    deleteReservation(reservationId: string, extraHttpRequestParams?: any): Observable<{}>;
+
+    /**
+     * Get a reservation by ID.
+     * 
+     * @endpoint get /api/v1/reservation/{reservationId}
+     * @param reservationId 
+     */
+    getReservationById(reservationId: string, extraHttpRequestParams?: any): Observable<ReservationResponseDto>;
+
+    /**
      * Returns a list of reservations.
      * 
      * @endpoint get /api/v1/reservation
@@ -31,6 +49,23 @@ export interface ReservationServiceInterface {
      * @param startDate Filter reservations starting from this date
      * @param endDate Filter reservations ending by this date
      */
-    getReservations(userId?: string, carId?: string, startDate?: string, endDate?: string, extraHttpRequestParams?: any): Observable<Array<ReservationDto>>;
+    getReservations(userId?: string, carId?: string, startDate?: string, endDate?: string, extraHttpRequestParams?: any): Observable<Array<ReservationResponseDto>>;
+
+    /**
+     * Create a new reservation.
+     * 
+     * @endpoint post /api/v1/reservation
+     * @param reservationDto reservation object to create
+     */
+    postReservation(reservationDto?: ReservationDto, extraHttpRequestParams?: any): Observable<{}>;
+
+    /**
+     * Update a reservation by ID.
+     * 
+     * @endpoint put /api/v1/reservation/{reservationId}
+     * @param reservationId 
+     * @param reservationDto reservation object to update
+     */
+    putReservation(reservationId: string, reservationDto: ReservationDto, extraHttpRequestParams?: any): Observable<ReservationResponseDto>;
 
 }

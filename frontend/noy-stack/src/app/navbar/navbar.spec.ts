@@ -1,20 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CarList } from './car-list';
-import {provideZonelessChangeDetection} from '@angular/core';
+import { Navbar } from './navbar';
 
-describe('CarList', () => {
-  let component: CarList;
-  let fixture: ComponentFixture<CarList>;
+describe('Navbar', () => {
+  let component: Navbar;
+  let fixture: ComponentFixture<Navbar>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CarList],
-      providers: [provideZonelessChangeDetection()]
+      imports: [Navbar]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CarList);
+    fixture = TestBed.createComponent(Navbar);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

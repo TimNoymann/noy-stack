@@ -1,20 +1,23 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CarList } from './car-list';
+import { CarDeleteDialog } from './car-delete-dialog';
 import {provideZonelessChangeDetection} from '@angular/core';
 
-describe('CarList', () => {
-  let component: CarList;
-  let fixture: ComponentFixture<CarList>;
+describe('CarDeleteDialog', () => {
+  let component: CarDeleteDialog;
+  let fixture: ComponentFixture<CarDeleteDialog>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CarList],
-      providers: [provideZonelessChangeDetection()]
+      imports: [CarDeleteDialog],
+      providers: [
+        provideZonelessChangeDetection(),
+      ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CarList);
+
+    fixture = TestBed.createComponent(CarDeleteDialog);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
