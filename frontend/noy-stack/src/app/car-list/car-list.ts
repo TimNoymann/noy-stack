@@ -1,16 +1,14 @@
 import {Component, inject, OnInit, Signal} from '@angular/core';
 import {CarDto, CarResponseDto} from '../core/modules/openapi';
 import {of} from 'rxjs';
-import {Store} from '@ngrx/store';
-import {selectCars, selectError, selectLoading} from '../core/car/car.feature';
-import {CarActions} from '../core/car/car.actions';
 import {MatTableModule} from '@angular/material/table';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {FormsModule} from '@angular/forms';
-import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import {MatDialogModule} from '@angular/material/dialog';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {MatIcon} from '@angular/material/icon';
 import {MatTooltip} from '@angular/material/tooltip';
+import {CarStore} from '../core/state/car/car.store';
 
 @Component({
   selector: 'app-car-list',
@@ -29,32 +27,29 @@ import {MatTooltip} from '@angular/material/tooltip';
 })
 export class CarList implements OnInit {
 
-  private store = inject(Store);
-  readonly dialog: MatDialog = inject(MatDialog);
+  private carStore = inject(CarStore);
 
-  cars: Signal<CarResponseDto[]> = this.store.selectSignal(selectCars);
-  loading = this.store.selectSignal(selectLoading);
-  error = this.store.selectSignal(selectError);
+  cars: Signal<CarResponseDto[]> = this.carStore.entities
+  loading = this.carStore.selectLoading
+  error = this.carStore.selectError
 
   displayedColumns: string[] = ['id', 'name', 'actions'];
 
   ngOnInit(): void {
-    this.store.dispatch(CarActions.enter());
+    this.carStore.enter();
   }
 
   protected readonly of = of;
 
   deleteCar(id: string, car: CarDto) {
-    this.store.dispatch(CarActions.deleteClicked({id: id, car: car}));
+    this.carStore.openDeleteDialog(id, car);
   }
 
   addCar() {
-    this.store.dispatch(CarActions.addClicked());
+    this.carStore.openAddCarDialog();
   }
 
   editCar(id: string, car: CarDto) {
-    this.store.dispatch(CarActions.editClicked(
-      {id: id, car: car}
-    ))
+    this.carStore.openEditDialog(id, car);
   }
 }

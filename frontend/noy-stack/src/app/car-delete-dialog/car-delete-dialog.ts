@@ -7,12 +7,10 @@ import {
   MatDialogTitle
 } from '@angular/material/dialog';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
-import {Store} from '@ngrx/store';
-import {selectDeleting, selectError} from '../core/car/car.feature';
 import {MatError} from '@angular/material/form-field';
-import {CarActions} from '../core/car/car.actions';
 import {CarDto} from '../core/modules/openapi';
 import {MatButton} from '@angular/material/button';
+import {CarStore} from '../core/state/car/car.store';
 
 @Component({
   selector: 'app-car-delete-dialog',
@@ -30,13 +28,13 @@ import {MatButton} from '@angular/material/button';
 })
 export class CarDeleteDialog {
 
-  private readonly store = inject(Store);
+  private readonly carStore = inject(CarStore);
   readonly data = inject<{id: string, car: CarDto}>(MAT_DIALOG_DATA);
 
-  error = this.store.selectSignal(selectError);
-  deleting = this.store.selectSignal(selectDeleting);
+  error = this.carStore.deleteError;
+  deleting = this.carStore.deleteLoading;
 
   delete() {
-    this.store.dispatch(CarActions.deleteCar({ id: this.data.id }));
+    this.carStore.deleteCar({id: this.data.id!});
   }
 }

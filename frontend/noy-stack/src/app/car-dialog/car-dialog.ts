@@ -1,20 +1,17 @@
-import {Component, effect, inject} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {
   MAT_DIALOG_DATA, MatDialogActions,
   MatDialogClose,
   MatDialogContent,
-  MatDialogRef,
   MatDialogTitle
 } from '@angular/material/dialog';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {CarDto} from '../core/modules/openapi';
 import {MatButtonModule} from '@angular/material/button';
 import {MatError, MatFormField, MatInput} from '@angular/material/input';
-import {Store} from '@ngrx/store';
-import {CarActions} from '../core/car/car.actions';
-import {selectError, selectSaving} from '../core/car/car.feature';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {CarDialogData} from './model/CarDialogData';
+import {CarStore} from '../core/state/car/car.store';
 
 @Component({
   selector: 'app-car-dialog',
@@ -25,13 +22,13 @@ import {CarDialogData} from './model/CarDialogData';
 })
 export class CarDialog {
 
-  private readonly store = inject(Store);
+  private readonly carStore = inject(CarStore);
   private readonly fb = inject(FormBuilder);
   readonly data = inject<CarDialogData>(MAT_DIALOG_DATA, {optional: true});
   protected isEdit: boolean;
 
-  saving = this.store.selectSignal(selectSaving);
-  error = this.store.selectSignal(selectError);
+  saving = this.carStore.saveLoading;
+  error = this.carStore.saveError;
 
 
   form = this.fb.group({
@@ -56,13 +53,9 @@ export class CarDialog {
       name: this.form.controls.name.value!,
     };
     if (this.data?.mode === 'edit') {
-      this.store.dispatch(
-        CarActions.updateCar({ id: this.data.id!, car })
-      );
+      this.carStore.updateCar({ id: this.data.id!, car: car });
     } else {
-      this.store.dispatch(
-        CarActions.addCar({ car })
-      );
+      this.carStore.addCar(car);
     }
   }
 }
