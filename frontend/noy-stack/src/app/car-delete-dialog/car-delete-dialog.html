@@ -8,7 +8,7 @@
 
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button mat-dialog-close (click)="delete()">
+  <button mat-button (click)="delete()">
     @if (deleting()) {
       <mat-progress-spinner
         diameter="18"

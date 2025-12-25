@@ -47,7 +47,6 @@ export class CarDialog {
 
   save() {
     if (this.form.invalid) {
-      console.log('Form is invalid');
       this.form.markAllAsTouched();
       return;
     }

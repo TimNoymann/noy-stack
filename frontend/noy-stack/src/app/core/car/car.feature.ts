@@ -19,7 +19,7 @@ const initialState: CarState = {
 };
 
 export const carFeature = createFeature({
-  name: 'cars',
+  name: 'car',
   reducer: createReducer(
     initialState,
 
