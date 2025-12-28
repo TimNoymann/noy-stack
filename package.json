@@ -1,0 +1,23 @@
+{
+  "name": "noy-stack",
+  "version": "1.0.0",
+  "description": "Spring-Boot is more or less an enterprise standard for building Java-based backend applications. There is nothing to add here.",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TimNoymann/noy-stack.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/TimNoymann/noy-stack/issues"
+  },
+  "homepage": "https://github.com/TimNoymann/noy-stack#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.57.0",
+    "@types/node": "^25.0.3"
+  }
+}
